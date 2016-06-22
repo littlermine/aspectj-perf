@@ -1,0 +1,21 @@
+<included>
+    <appender name="ProfiledLogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logs.path}/${app.name}-profiled.%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyyMMdd'T'HH:mm:ss.SSS'Z'} %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="AsyncProfiledLogAppender" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>8192</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <appender-ref ref="ProfiledLogAppender"/>
+    </appender>
+
+    <logger name="com.littlermine.profiled.ProfiledLogUtils" level="INFO" additivity="false">
+        <appender-ref ref="AsyncProfiledLogAppender"/>
+    </logger>
+</included>
